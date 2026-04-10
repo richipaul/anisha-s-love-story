@@ -12,6 +12,15 @@ const cards = [
 const ChoicesPage = () => {
   const navigate = useNavigate();
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [watched, setWatched] = useState<Set<string>>(new Set());
+
+  const handleVideoEnd = (videoSrc: string) => {
+    const newWatched = new Set(watched);
+    newWatched.add(videoSrc);
+    setWatched(newWatched);
+  };
+
+  const allWatched = watched.size >= cards.length;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative page-enter px-6">
@@ -27,10 +36,10 @@ const ChoicesPage = () => {
             <button
               key={card.label}
               onClick={() => setActiveVideo(card.video)}
-              className="glass rounded-2xl p-8 flex flex-col items-center gap-4
+              className={`glass rounded-2xl p-8 flex flex-col items-center gap-4
                          hover:scale-105 active:scale-95 transition-all duration-300
                          hover:shadow-[0_0_30px_hsl(330_80%_60%/0.3)]
-                         cursor-pointer group"
+                         cursor-pointer group ${watched.has(card.video) ? 'ring-2 ring-primary/50' : ''}`}
             >
               <span className="text-5xl group-hover:scale-125 transition-transform duration-300">
                 {card.emoji}
@@ -38,6 +47,9 @@ const ChoicesPage = () => {
               <span className="text-lg font-semibold text-foreground">
                 {card.label}
               </span>
+              {watched.has(card.video) && (
+                <span className="text-xs text-primary">✓ Watched</span>
+              )}
             </button>
           ))}
         </div>
@@ -48,6 +60,10 @@ const ChoicesPage = () => {
         videoSrc={activeVideo || ""}
         onClose={() => setActiveVideo(null)}
         onVideoEnd={() => navigate("/final")}
+        showPrompt={allWatched}
+        onSingleVideoEnd={() => {
+          if (activeVideo) handleVideoEnd(activeVideo);
+        }}
       />
     </div>
   );
