@@ -6,7 +6,7 @@ import VideoModal from "@/components/VideoModal";
 const cards = [
   { emoji: "🎉", label: "Guests Wishes", video: "/videos/guest.mp4" },
   { emoji: "❤️", label: "From Me", video: "/videos/guest.mp4" },
-  { emoji: "🎁", label: "A Surprise", video: "/videos/guest.mp4" },
+  { emoji: "🎁", label: "A Surprise", video: "/videos/surprise.mp4" },
 ];
 
 const ChoicesPage = () => {
